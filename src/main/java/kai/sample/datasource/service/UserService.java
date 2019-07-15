@@ -1,5 +1,7 @@
 package kai.sample.datasource.service;
 
+import kai.sample.controller.msg.ErrorCode;
+import kai.sample.controller.msg.RegisterRequest;
 import kai.sample.datasource.User;
 import kai.sample.datasource.UserRepository;
 import kai.sample.util.KaiUtil;
@@ -34,20 +36,27 @@ public class UserService {
     /**
      * 建立新user
      */
-    public boolean createUser(String user, String password) {
+    public ErrorCode createUser(RegisterRequest request) {
+        if (request == null) {
+            return ErrorCode.ILLEGAL_PARAMETERS;
+        }
+
+        String user = request.getUser();
+        String password = request.getPwd();
         if (KaiUtil.isEmptyStr(user) || KaiUtil.isEmptyStr(password)) {
-            return false;
+            return ErrorCode.ILLEGAL_PARAMETERS;
         }
 
         if (user.length() < MIN_USER_SIZE || user.length() > MAX_USER_SIZE) {
-            return false;
+            return ErrorCode.ILLEGAL_USER;
         }
+
         if (password.length() < MIN_PWD_SIZE || password.length() > MAX_PWD_SIZE) {
-            return false;
+            return ErrorCode.ILLEGAL_PWD;
         }
 
         if (userRepo.existsById(user)) {
-            return false;
+            return ErrorCode.USER_EXISTS;
         }
 
         User newUser = new User();
@@ -55,7 +64,7 @@ public class UserService {
         newUser.setPassword(password);
         newUser.setCreate_time(new Date());
         userRepo.save(newUser);
-        return true;
+        return ErrorCode.SUCCESS;
     }
 
 

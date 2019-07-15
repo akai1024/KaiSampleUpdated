@@ -2,11 +2,7 @@ package kai.sample.controller.msg;
 
 public class BasicResponse {
 
-    public static final int ERRORCODE_SUCCESS = 0;
-
-    public static final int ERRORCODE_CREATE_USER_FAIL = 1000;
-
-    private int errorCode = ERRORCODE_SUCCESS;
+    private int errorCode;
     private String msg;
     private Object data;
 

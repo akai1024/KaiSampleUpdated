@@ -22,7 +22,8 @@
                     }
                     // 失敗
                     else {
-                        document.getElementById('showText').innerHTML = 'register fail!';
+                        var errMsg = 'register fail... (' + res.errorCode + ')' + res.msg;
+                        document.getElementById('showText').innerHTML = errMsg;
                     }
                 }
             }
