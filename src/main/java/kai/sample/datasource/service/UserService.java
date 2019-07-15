@@ -43,15 +43,11 @@ public class UserService {
 
         String user = request.getUser();
         String password = request.getPwd();
-        if (KaiUtil.isEmptyStr(user) || KaiUtil.isEmptyStr(password)) {
-            return ErrorCode.ILLEGAL_PARAMETERS;
-        }
-
-        if (user.length() < MIN_USER_SIZE || user.length() > MAX_USER_SIZE) {
+        if (KaiUtil.isEmptyStr(user) || user.length() < MIN_USER_SIZE || user.length() > MAX_USER_SIZE) {
             return ErrorCode.ILLEGAL_USER;
         }
 
-        if (password.length() < MIN_PWD_SIZE || password.length() > MAX_PWD_SIZE) {
+        if (KaiUtil.isEmptyStr(password) || password.length() < MIN_PWD_SIZE || password.length() > MAX_PWD_SIZE) {
             return ErrorCode.ILLEGAL_PWD;
         }
 
