@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register Your Account</title>
+
+    <script type="text/javascript">
+        function register(){
+            var userName = document.getElementById('from').value;
+            var password = document.getElementById('pwd').value;
+
+            const Http = new XMLHttpRequest();
+            Http.open("POST", '/user/register', true);
+            Http.onreadystatechange = function() {
+                if (Http.readyState == XMLHttpRequest.DONE) {
+                    var res = JSON.parse(Http.responseText);
+                    console.log(res);
+
+                    // 成功
+                    if(res.errorCode == 0){
+                        navigateToChat();
+                    }
+                    // 失敗
+                    else {
+                        document.getElementById('showText').innerHTML = 'register fail!';
+                    }
+                }
+            }
+            Http.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+            Http.send(JSON.stringify({ "user":userName, "pwd":password }));
+
+        }
+
+        function navigateToChat(){
+            console.log('navigateToChat');
+            window.location.replace('/chat');
+        }
+
+    </script>
+</head>
+<body>
+<div>
+    <h3>Register</h3>
+    <p id="showText"></p>
+    <input type="text" id="from" placeholder="Choose a nickname"/><br/>
+    <input type="password" id="pwd" placeholder="Password(At least 4 characters)"/>
+</div>
+<br/>
+<div>
+    <button id="reg" onclick="register();">Register</button>
+</div>
+
+</body>
+</html>

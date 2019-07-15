@@ -1,5 +1,6 @@
 package kai.sample.websocket;
 
+import kai.sample.datasource.service.UserService;
 import kai.sample.util.LogHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Autowired
     private WebSocketSessions sessions;
+
+    @Autowired
+    private UserService userService;
 
     private void printSessions(String msg) {
         LogHelper.logInfoParam(logger, msg + ", {}", sessions);
@@ -90,11 +94,17 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                     case CONNECT: {
                         String user = accessor.getFirstNativeHeader("user");
                         String pwd = accessor.getFirstNativeHeader("pwd");
-                        // session內提供UserPrinciple資訊
-                        accessor.setUser(new SessionUser(sessionId, user, pwd));
 
-                        // 註冊連線
-                        sessions.registerSessionId(user, sessionId);
+                        // 密碼檢查
+                        if (userService.isPasswordCorrect(user, pwd)) {
+                            // session內提供UserPrinciple資訊
+                            accessor.setUser(new SessionUser(sessionId, user, pwd));
+                            // 註冊連線
+                            sessions.registerSessionId(user, sessionId);
+                        } else {
+                            sessions.forceCloseSession(sessionId);
+                        }
+
                         printSessions("StompCommand.CONNECT");
                         break;
                     }

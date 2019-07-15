@@ -12,22 +12,25 @@
             function setConnected(connected) {
                 document.getElementById('connect').disabled = connected;
                 document.getElementById('disconnect').disabled = !connected;
+                document.getElementById('register').disabled = connected;
                 document.getElementById('conversationDiv').style.visibility
                   = connected ? 'visible' : 'hidden';
                 document.getElementById('response').innerHTML = '';
 
                 document.getElementById('from').disabled = connected;
+                document.getElementById('pwd').style.visibility = connected ? 'hidden' : 'visible';
             }
 
             function connect() {
                 userName = document.getElementById('from').value;
-                if(userName==''){
+                var password = document.getElementById('pwd').value;
+                if(userName == '' || password == '' || password.length < 4){
                     return;
                 }
 
                 var socket = new SockJS('/chatroom');
                 stompClient = Stomp.over(socket);
-                stompClient.connect({user:userName}, function(frame) {
+                stompClient.connect({user:userName, pwd:password}, function(frame) {
                     setConnected(true);
                     console.log('Connected: ' + frame);
 
@@ -73,17 +76,25 @@
                 elem.scrollTop = elem.scrollHeight;
             }
 
+            function navigateToRegister(){
+                console.log('navigateToRegister');
+                window.location.replace('/register');
+            }
+
     </script>
 </head>
 <body onload="disconnect()">
 <div>
+    <h3>Welcom to ChatRoom</h3>
     <div>
-        <input type="text" id="from" placeholder="Choose a nickname"/>
+        <input type="text" id="from" placeholder="Nickname"/><br/>
+        <input type="password" id="pwd" placeholder="Password(At least 4 characters)"/>
     </div>
     <br/>
     <div>
         <button id="connect" onclick="connect();">Connect</button>
         <button id="disconnect" disabled="disabled" onclick="disconnect();">Disconnect</button>
+        <button id="register" onclick="navigateToRegister();">Register</button>
     </div>
     <br/>
     <div id="conversationDiv">
