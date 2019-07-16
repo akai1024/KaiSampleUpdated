@@ -34,14 +34,17 @@ public class SessionUser implements Principal {
         return Objects.hash(sessionId, user);
     }
 
+    /**
+     * 用來識別session的名稱(永遠保持只回傳sessionId)
+     */
     @Override
     public String getName() {
-        return "[" + user + "@" + sessionId + "]";
+        return sessionId;
     }
 
     @Override
     public String toString() {
-        return getName();
+        return "[" + user + "@" + sessionId + "]";
     }
 
     public String getUser() {

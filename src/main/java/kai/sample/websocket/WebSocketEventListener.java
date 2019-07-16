@@ -27,16 +27,14 @@ public class WebSocketEventListener {
     public void handleSessionConnectEvent(SessionConnectEvent event) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(event.getMessage());
         SessionUser user = (SessionUser) accessor.getUser();
-        template.broadcastSystemMsg(user.getName() + LOGIN_MSG);
-        System.out.println("handleSessionConnectEvent");
+        template.broadcastSystemMsg(user.toString() + LOGIN_MSG);
     }
 
     @EventListener
     public void handleSessionDisconnectEvent(SessionDisconnectEvent event) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(event.getMessage());
         SessionUser user = (SessionUser) accessor.getUser();
-        template.broadcastSystemMsg(user.getName() + LOGOUT_MSG);
-        System.out.println("handleSessionDisconnectEvent");
+        template.broadcastSystemMsg(user.toString() + LOGOUT_MSG);
     }
 
 }
