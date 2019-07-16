@@ -8,7 +8,6 @@ import kai.sample.util.KaiUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -58,7 +57,6 @@ public class UserService {
         User newUser = new User();
         newUser.setAccount(user);
         newUser.setPassword(password);
-        newUser.setCreate_time(new Date());
         userRepo.save(newUser);
         return ErrorCode.SUCCESS;
     }

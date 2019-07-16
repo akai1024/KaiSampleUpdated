@@ -1,13 +1,14 @@
 package kai.sample.datasource;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = User.TABLE_NAME)
+@EntityListeners(AuditingEntityListener.class)
 public class User {
 
     public static final String TABLE_NAME = "users";
@@ -19,6 +20,7 @@ public class User {
     @Column
     private String password;
 
+    @CreatedDate
     @Column
     private Date create_time;
 
