@@ -44,4 +44,8 @@ public class SessionUser implements Principal {
         return getName();
     }
 
+    public String getUser() {
+        return user;
+    }
+
 }

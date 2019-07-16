@@ -2,6 +2,7 @@ package kai.sample.controller.chat;
 
 import kai.sample.datasource.service.ChatLogService;
 import kai.sample.websocket.MsgTemplate;
+import kai.sample.websocket.SessionUser;
 import kai.sample.websocket.WebSocketSessions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -24,15 +25,10 @@ public class ChatController {
     @SendTo(MsgTemplate.BROADCAST_DESTINATION)
     public OutputMessage send(final SimpMessageHeaderAccessor accessor, final Message message) throws Exception {
         final String time = new Date().toString();
+        SessionUser user = (SessionUser) accessor.getUser();
+        message.setFrom(user.getUser());
         // 寫入chat_log
         chatLogService.saveChatLog(message);
-//        // 印出預設的sessionId
-//        System.out.println("session:" + accessor.getSessionId() + ", " + message.toString());
-//        // 查看header
-//        System.out.println(accessor.getFirstNativeHeader("user"));
-//        System.out.println(accessor.getFirstNativeHeader("testParam"));
-//        System.out.println(accessor.getFirstNativeHeader("other"));
-
         return new OutputMessage(time, message);
     }
 
