@@ -2,8 +2,9 @@ package kai.sample.controller.msg;
 
 public enum ErrorCode {
 
-    SUCCESS(0, "SUCCESS"),
-    ILLEGAL_PARAMETERS(1, "illegal parameters"),
+    SUCCESS(0, "success"),
+    UNKNOWN_ERROR(1, "unknown error"),
+    ILLEGAL_PARAMETERS(2, "illegal parameters"),
 
 
     ILLEGAL_USER(1000, "illegal parameter: user"),
